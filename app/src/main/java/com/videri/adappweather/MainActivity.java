@@ -1,6 +1,7 @@
 package com.videri.adappweather;
 
 import android.app.Activity;
+import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -74,13 +75,13 @@ public class MainActivity extends Activity {
                         double fahrenheit = TemperatureConverter.kelvinToFahrenheit(tempGsonObj.getMain().getTemp() );
                         String text = "";
                         if(fahrenheit <= 40){
-                            text  = tempGsonObj.getName() + " " + fahrenheit +" degree " + tempGsonObj.getWeather().get(0).getMain();
+                            text  = tempGsonObj.getName() + " " + String.format("%.2f",fahrenheit) +" degree " + tempGsonObj.getWeather().get(0).getMain();
                             Log.v(TAG, text);
                             isGreaterTemp = false;
                         }
                         else {
 
-                            text  = tempGsonObj.getName() + " " + fahrenheit +" degree " + tempGsonObj.getWeather().get(0).getMain();
+                            text  = tempGsonObj.getName() + " " + String.format("%.2f", fahrenheit) + " degree " + tempGsonObj.getWeather().get(0).getMain();
                             Log.v(TAG, text);
 
                             isGreaterTemp = true;
@@ -93,14 +94,29 @@ public class MainActivity extends Activity {
                         if(isGreater40 != isGreaterTemp){
                             isGreater40 = isGreaterTemp;
                             if(isGreaterTemp){
-                                Picasso.with(getApplicationContext())
-                                        .load(R.drawable.cold_drink)
-                                        .into(mImageView);
+                                if (getResources().getConfiguration().orientation ==
+                                        Configuration.ORIENTATION_PORTRAIT) {
+                                    Picasso.with(getApplicationContext())
+                                            .load(R.mipmap.sunv)
+                                            .into(mImageView);
+                                } else{
+                                    Picasso.with(getApplicationContext())
+                                            .load(R.mipmap.sunh)
+                                            .into(mImageView);
+
+                                }
                             }
                             else {
-                                Picasso.with(getApplicationContext())
-                                        .load(R.drawable.hot_coffee)
-                                        .into(mImageView);
+                                if (getResources().getConfiguration().orientation ==
+                                        Configuration.ORIENTATION_PORTRAIT) {
+                                    Picasso.with(getApplicationContext())
+                                            .load(R.mipmap.snowv)
+                                            .into(mImageView);
+                                } else{
+                                    Picasso.with(getApplicationContext())
+                                            .load(R.mipmap.snowh)
+                                            .into(mImageView);
+                                }
                             }
                         }
                     }
